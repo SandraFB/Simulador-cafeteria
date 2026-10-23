@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador Actividad 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--verde:#007989;--indigo:#1D1D1F;--claro:#30FDF0;--bonampak:#00B6BC;--chapultepec:#48FC88;--tinte:#E8F6F7;--lila:#EAFBF0;--texto:#222;--gris:#55555C;--linea:#D9D9D9;--fondo:#F2F2F2;--rojo:#C93B3B;--card:#fff}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Onest",Arial,sans-serif;color:var(--texto);background:var(--fondo);line-height:1.45}
+h1,h2,h3{font-family:"Sora",Arial,sans-serif;color:var(--indigo);margin:0}
+header{position:relative;overflow:hidden;background:#fff;color:var(--texto);padding:22px 28px 24px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+header::after{content:"";position:absolute;inset:-40% -10% -40% 55%;background:radial-gradient(circle at 30% 40%,rgba(48,253,240,.55),transparent 45%),radial-gradient(circle at 70% 30%,rgba(0,182,188,.45),transparent 45%),radial-gradient(circle at 60% 75%,rgba(72,252,136,.5),transparent 45%),radial-gradient(circle at 90% 60%,rgba(0,121,137,.45),transparent 45%);filter:blur(10px);pointer-events:none}
+header>*{position:relative;z-index:1}
+header .logo{height:56px;width:auto;flex:none}
+header h1{color:var(--indigo);font-size:26px;font-weight:600;margin:0}
+header p{margin:4px 0 0;color:var(--gris)}
+nav{display:flex;flex-wrap:wrap;background:#fff;border-top:1px solid var(--indigo);border-bottom:1px solid var(--indigo);position:sticky;top:0;z-index:5}
+nav button{flex:1 1 auto;background:#fff;color:var(--indigo);border:0;border-right:1px solid var(--linea);padding:12px 14px;font:500 12px "Onest",Arial;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+nav button:last-child{border-right:0}nav button:hover{background:var(--fondo)}
+nav button.on{background:var(--indigo);color:#fff}
+main{max-width:1180px;margin:0 auto;padding:24px 20px 60px}
+section{display:none}section.on{display:block}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--verde);text-transform:uppercase;margin-bottom:4px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}.g5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:820px){.g2,.g3,.g4,.g5{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.g2,.g3,.g4,.g5{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--linea)}
+.tinte{background:var(--tinte);border-color:var(--tinte)}.lila{background:var(--lila);border-color:var(--lila)}
+.oscuro{background:var(--indigo);color:#fff;border-color:var(--indigo)}.oscuro h3{color:#fff}
+.big{font:600 32px "Sora",Arial;color:var(--verde);line-height:1.1}
+.big.ind{color:var(--indigo)}.big.rojo{color:var(--rojo)}
+.lab{font-size:13px;color:var(--gris)}
+.oscuro .lab{color:#D9D2F2}
+label{display:block;font-size:14px;font-weight:600;margin:12px 0 4px;color:var(--indigo)}
+input[type=range]{width:100%;accent-color:var(--verde)}
+input[type=number],select,textarea{width:100%;padding:8px 10px;border:1px solid var(--linea);border-radius:8px;font:14px "Onest",Arial}
+.val{float:right;font-weight:700;color:var(--verde)}
+.btn{background:var(--verde);color:#fff;border:0;border-radius:999px;padding:10px 18px;font:600 14px "Onest",Arial;cursor:pointer}
+.btn.ind{background:var(--indigo)}.btn.out{background:#fff;color:var(--indigo);border:1.5px solid var(--indigo)}
+.pill{display:inline-block;background:var(--verde);color:#fff;border-radius:999px;padding:4px 12px;font-size:12px;font-weight:700}
+.pill.ind{background:var(--indigo)}
+.nota{font-size:13px;color:var(--gris);margin-top:10px}
+.pregunta{border-left:0;background:#fff;border-radius:12px;padding:12px 14px;margin-top:10px;font-size:14px}
+.pregunta b{color:var(--verde)}
+table{width:100%;border-collapse:collapse;font-size:14px}th{background:var(--indigo);color:#fff;text-align:left;padding:8px}td{padding:8px;border-bottom:1px solid var(--linea)}
+.timer{font:600 64px "Sora",Arial;color:var(--indigo)}
+.fase{padding:10px 12px;border-radius:10px;background:#fff;border:1px solid var(--linea);margin-bottom:8px;cursor:pointer}
+.fase.on{background:var(--indigo);color:#fff}
+.votos{display:flex;gap:10px;align-items:center;margin-top:8px}
+.bar{height:22px;border-radius:6px;background:var(--verde);transition:width .3s}
+svg text{font-family:"Onest",Arial}
+.cnt{font-weight:700}.ok{color:var(--verde)}.warn{color:var(--rojo)}
+.check label{font-weight:400;color:var(--texto);display:flex;gap:8px;align-items:flex-start;margin:6px 0}
+h2{font-size:26px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;margin-bottom:16px}
+footer{border-top:1px solid var(--indigo);background:#fff;padding:14px 28px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gris);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}h3{font-size:18px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+  <h1>Actividad 1 · Foro técnico: ¿es suficiente la evidencia?</h1>
+  <p>Simulador para la dinámica de la sesión 2 · Estimación, muestreo y modelado determinístico</p>
+  </div>
+</header>
+<nav id="nav">
+  <button data-t="dilema" class="on">1 · El dilema</button>
+  <button data-t="desc">2 · Descriptivos</button>
+  <button data-t="est">3 · Estimación y muestreo</button>
+  <button data-t="bayes">4 · Bayes</button>
+  <button data-t="modelo">5 · Modelo de capacidad</button>
+  <button data-t="postura">6 · Mi postura</button>
+  <button data-t="dinamica">Dinámica y cronómetro</button>
+</nav>
+<main>
+
+<!-- 1 DILEMA -->
+<section id="dilema" class="on">
+  <div class="eyebrow">El caso</div>
+  <h2>¿Ampliar la capacidad del centro de atención los fines de semana?</h2>
+  <div class="grid g5">
+    <div class="card"><div class="big">200</div><div class="lab">solicitudes en 4 fines de semana consecutivos</div></div>
+    <div class="card"><div class="big">18 / 14</div><div class="lab">minutos de atención: media / mediana</div></div>
+    <div class="card"><div class="big">11 min</div><div class="lab">desviación estándar</div></div>
+    <div class="card"><div class="big">20 %</div><div class="lab">de solicitudes tardó más de 30 minutos</div></div>
+    <div class="card"><div class="big ind">30 %</div><div class="lab">de los fines de semana tenía alta demanda (histórico)</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card tinte"><h3>Alternativa A · Decidir con la muestra disponible</h3><p>Usar descriptivos, probabilidades observadas e historia para estimar el servicio y un modelo determinístico sencillo de capacidad en un escenario esperado. Posponer también cuesta.</p></div>
+    <div class="card lila"><h3>Alternativa B · Ampliar la muestra antes de decidir</h3><p>Cuatro fines consecutivos pueden no representar el comportamiento habitual y uno coincidió con una campaña promocional que podría sesgar las estimaciones.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Dato adicional</h3>
+    <p>Cuando hay alta demanda, históricamente es mucho más frecuente observar tiempos de atención superiores a 30 minutos. Ese dato puede combinarse con la información previa para reconsiderar la probabilidad de que hoy se enfrente un escenario de alta demanda.</p>
+    <div class="pregunta"><b>Pregunta detonante.</b> ¿Recomendarías decidir con la muestra disponible o ampliar primero la evidencia, y cómo sustentarías tu postura con estadística descriptiva, probabilidad, estimación, muestreo y un modelo determinístico sencillo?</div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>Voto del grupo</h3>
+      <p class="lab">Registra los votos que lleguen al chat. El conteo vive solo en esta pantalla.</p>
+      <div class="grid g2">
+        <div><b>Voto inicial</b>
+          <div class="votos"><button class="btn" onclick="voto('i','A',1)">A +1</button><button class="btn ind" onclick="voto('i','B',1)">B +1</button><button class="btn out" onclick="reset('i')">Reiniciar</button></div>
+          <div id="vi" style="margin-top:10px"></div></div>
+        <div><b>Voto final</b>
+          <div class="votos"><button class="btn" onclick="voto('f','A',1)">A +1</button><button class="btn ind" onclick="voto('f','B',1)">B +1</button><button class="btn out" onclick="reset('f')">Reiniciar</button></div>
+          <div id="vf" style="margin-top:10px"></div></div>
+      </div>
+    </div>
+    <div class="card oscuro">
+      <h3>Lo que evalúa el foro</h3>
+      <p class="lab">Lista de cotejo, cumple o no cumple</p>
+      <p><b>Aporte inicial · 50 %</b><br>Postura clara, justificación, criterios técnicos y conclusión. 150 palabras en 2 o 3 párrafos.</p>
+      <p><b>Réplicas · 30 %</b><br>A dos participantes distintos, 80 a 100 palabras cada una. Auditar, comparar o mejorar.</p>
+      <p style="margin-bottom:0"><b>Síntesis · 20 %</b><br>Cuatro preguntas de cierre, 80 palabras cada respuesta. Debe mostrar evolución.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 DESCRIPTIVOS -->
+<section id="desc">
+  <div class="eyebrow">Estadística descriptiva</div>
+  <h2>¿Qué dicen la media, la mediana y la dispersión?</h2>
+  <div class="grid g4">
+    <div class="card"><div class="big" id="d_gap">4 min</div><div class="lab">diferencia media − mediana</div></div>
+    <div class="card"><div class="big" id="d_sk">1.09</div><div class="lab">asimetría de Pearson 3(x̄ − Me) / s</div></div>
+    <div class="card"><div class="big" id="d_cv">61 %</div><div class="lab">coeficiente de variación s / x̄</div></div>
+    <div class="card"><div class="big ind">40</div><div class="lab">solicitudes de 200 tardaron más de 30 min</div></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>Forma ilustrativa de la distribución</h3>
+      <svg id="skew" viewBox="0 0 520 250" width="100%" role="img" aria-label="Curva ilustrativa sesgada a la derecha"></svg>
+      <p class="nota">Curva ilustrativa con media 18 y mediana 14, no son los datos reales. Sirve para ver por qué la media queda a la derecha de la mediana.</p>
+    </div>
+    <div class="card tinte">
+      <h3>Preguntas para tu argumento</h3>
+      <div class="pregunta"><b>1.</b> Si la media supera a la mediana, ¿qué tipo de casos jalan el promedio hacia arriba?</div>
+      <div class="pregunta"><b>2.</b> Para dimensionar personal, ¿conviene usar la media, la mediana o un percentil alto? ¿Qué riesgo asumes con cada una?</div>
+      <div class="pregunta"><b>3.</b> Un CV cercano a 60 % indica alta variabilidad. ¿Qué implica para un modelo determinístico que usa un solo valor de tiempo?</div>
+      <div class="pregunta"><b>4.</b> El 20 % que tarda más de 30 min, ¿está repartido en los 4 fines o concentrado en uno? ¿Cómo lo sabrías?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 ESTIMACION -->
+<section id="est">
+  <div class="eyebrow">Estimación y muestreo</div>
+  <h2>¿Qué tan precisa es la estimación con 200 solicitudes?</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Datos de la muestra</h3>
+      <label>Media (min) <span class="val" id="e_mv">18</span></label><input type="range" id="e_m" min="10" max="30" step="0.5" value="18">
+      <label>Desviación estándar (min) <span class="val" id="e_sv">11</span></label><input type="range" id="e_s" min="2" max="20" step="0.5" value="11">
+      <label>Tamaño de muestra n <span class="val" id="e_nv">200</span></label><input type="range" id="e_n" min="20" max="1000" step="10" value="200">
+      <label>Proporción > 30 min <span class="val" id="e_pv">20 %</span></label><input type="range" id="e_p" min="0.05" max="0.5" step="0.01" value="0.20">
+      <label>Nivel de confianza</label>
+      <select id="e_c"><option value="1.645">90 %</option><option value="1.96" selected>95 %</option><option value="2.576">99 %</option></select>
+    </div>
+    <div class="card tinte">
+      <h3>Si la muestra fuera aleatoria simple</h3>
+      <div class="big" id="e_ic">16.5 a 19.5</div><div class="lab">IC para la media en minutos: x̄ ± z · s / √n</div>
+      <div class="big ind" style="margin-top:14px" id="e_icp">14.5 % a 25.5 %</div><div class="lab">IC para la proporción > 30 min: p̂ ± z · √(p̂(1 − p̂) / n)</div>
+      <p class="nota">Con n grande, t y z casi coinciden. Este cálculo supone 200 solicitudes independientes.</p>
+    </div>
+    <div class="card oscuro">
+      <h3>Pero la muestra viene en 4 fines de semana</h3>
+      <p class="lab">Las solicitudes de un mismo fin de semana se parecen entre sí. Eso es un muestreo por conglomerados.</p>
+      <label style="color:#fff">Fines de semana distintos k <span class="val" style="color:var(--claro)" id="c_kv">4</span></label><input type="range" id="c_k" min="2" max="26" step="1" value="4">
+      <label style="color:#fff">Correlación dentro del fin (ICC) <span class="val" style="color:var(--claro)" id="c_iv">0.05</span></label><input type="range" id="c_i" min="0" max="0.3" step="0.01" value="0.05">
+      <div class="big" style="color:var(--claro);margin-top:10px" id="c_neff">67</div><div class="lab">tamaño efectivo de muestra = n / [1 + (m − 1) · ICC]</div>
+      <div class="big" style="color:#fff;font-size:24px;margin-top:10px" id="c_ic">15.4 a 20.6 min</div><div class="lab">IC para la media ajustado por conglomerados</div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>¿Cuántos datos necesitarías?</h3>
+      <label>Margen de error deseado para la media (min) <span class="val" id="s_ev">1.0</span></label><input type="range" id="s_e" min="0.5" max="4" step="0.1" value="1">
+      <p>Muestra aleatoria simple: <b id="s_n">465</b> solicitudes.<br>Con conglomerados de <span id="s_m">50</span> solicitudes por fin de semana: <b id="s_k">≈ 33</b> fines de semana.</p>
+      <p class="nota">n = (z · s / E)² multiplicado por el efecto de diseño 1 + (m − 1) · ICC.</p>
+    </div>
+    <div class="card lila">
+      <h3>Sensibilidad a la campaña promocional</h3>
+      <label>Media supuesta del fin de semana con campaña (min) <span class="val" id="p_cv">26</span></label><input type="range" id="p_c" min="10" max="40" step="0.5" value="26">
+      <p>Si los 4 fines aportaron 50 solicitudes cada uno, la media sin el fin de campaña sería <b id="p_m">15.3</b> minutos.</p>
+      <p class="nota">Supuesto didáctico: el caso no reporta datos por fin de semana. Mueve el control para ver cuánto podría mover un solo fin atípico la estimación.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 BAYES -->
+<section id="bayes">
+  <div class="eyebrow">Probabilidad condicional y teorema de Bayes</div>
+  <h2>¿Qué tan probable es que hoy estemos en alta demanda?</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Supuestos editables</h3>
+      <label>P(alta demanda) previa <span class="val" id="b_av">0.30</span></label><input type="range" id="b_a" min="0.05" max="0.9" step="0.01" value="0.30">
+      <label>P(> 30 min | alta demanda) <span class="val" id="b_hv">0.40</span></label><input type="range" id="b_h" min="0.05" max="0.95" step="0.01" value="0.40">
+      <label>P(> 30 min | demanda normal) <span class="val" id="b_lv">0.10</span></label><input type="range" id="b_l" min="0.01" max="0.6" step="0.01" value="0.10">
+      <p class="nota">El caso dice que en alta demanda los tiempos largos son mucho más frecuentes, pero no da cifras. Declara tus valores como supuestos en el foro.</p>
+    </div>
+    <div class="card tinte">
+      <h3>Resultado</h3>
+      <div class="big" id="b_post">0.63</div><div class="lab">P(alta demanda | solicitud > 30 min)</div>
+      <div class="big ind" style="margin-top:14px" id="b_tot">0.19</div><div class="lab">P(> 30 min) por probabilidad total. Observado en la muestra: 0.20</div>
+      <p id="b_cons" class="nota"></p>
+    </div>
+    <div class="card">
+      <h3>Previa contra posterior</h3>
+      <svg id="bsvg" viewBox="0 0 300 220" width="100%" role="img" aria-label="Barras de probabilidad previa y posterior"></svg>
+    </div>
+  </div>
+  <div class="card oscuro" style="margin-top:16px">
+    <h3>La fórmula</h3>
+    <p style="font-size:17px;margin:6px 0">P(A | B) = P(B | A) · P(A) / [ P(B | A) · P(A) + P(B | Aᶜ) · P(Aᶜ) ]</p>
+    <p class="lab" id="b_txt"></p>
+  </div>
+</section>
+
+<!-- 5 MODELO -->
+<section id="modelo">
+  <div class="eyebrow">Modelo determinístico</div>
+  <h2>¿Cuántos agentes hacen falta en cada escenario?</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Entradas</h3>
+      <label>Solicitudes por día de fin de semana (escenario normal) <span class="val" id="m_vv">300</span></label><input type="range" id="m_v" min="50" max="1000" step="10" value="300">
+      <label>Incremento de volumen en alta demanda <span class="val" id="m_iv">40 %</span></label><input type="range" id="m_i" min="0" max="1.5" step="0.05" value="0.40">
+      <label>Tiempo de atención usado</label>
+      <select id="m_t"><option value="18" selected>Media · 18 min</option><option value="14">Mediana · 14 min</option><option value="27">Percentil alto supuesto · 27 min</option></select>
+      <label>Horas productivas por agente <span class="val" id="m_hv">7</span></label><input type="range" id="m_h" min="4" max="10" step="0.5" value="7">
+      <label>Ocupación objetivo <span class="val" id="m_ov">85 %</span></label><input type="range" id="m_o" min="0.6" max="1" step="0.01" value="0.85">
+      <label>Agentes actuales <span class="val" id="m_av">12</span></label><input type="range" id="m_a" min="1" max="60" step="1" value="12">
+      <label>Probabilidad de alta demanda para el escenario ponderado</label>
+      <select id="m_p"><option value="prior">Previa histórica (pestaña 4)</option><option value="post">Posterior de Bayes (pestaña 4)</option></select>
+    </div>
+    <div class="card" style="grid-column:span 2">
+      <h3>Agentes requeridos = ⌈ volumen × tiempo de atención / (60 × horas × ocupación) ⌉</h3>
+      <svg id="msvg" viewBox="0 0 640 280" width="100%" role="img" aria-label="Agentes requeridos por escenario"></svg>
+      <table style="margin-top:8px"><thead><tr><th>Escenario</th><th>Volumen</th><th>Carga (h)</th><th>Agentes</th><th>Brecha vs actuales</th></tr></thead><tbody id="mtab"></tbody></table>
+      <p class="nota">Todos los valores de volumen, horas, ocupación y agentes actuales son supuestos didácticos: el caso no los reporta. Lo importante es ver qué supuesto mueve más la decisión.</p>
+    </div>
+  </div>
+  <div class="card tinte" style="margin-top:16px">
+    <h3>Para el equipo auditor</h3>
+    <div class="grid g3">
+      <div class="pregunta"><b>¿Qué tiempo usar?</b> Cambia media, mediana y percentil. ¿Cuántos agentes cambian?</div>
+      <div class="pregunta"><b>¿Qué probabilidad usar?</b> Compara el escenario ponderado con la previa y con la posterior.</div>
+      <div class="pregunta"><b>¿Qué supuesto falta?</b> El modelo trata el tiempo como fijo. ¿Qué pasa con las colas cuando la ocupación se acerca a 100 %?</div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 POSTURA -->
+<section id="postura">
+  <div class="eyebrow">Fase 1 · Aporte inicial</div>
+  <h2>Arma el borrador de tu aporte</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>1 · Mi postura</h3>
+      <div class="check">
+        <label><input type="radio" name="pos" value="A"> Decidir ya con la muestra (A)</label>
+        <label><input type="radio" name="pos" value="B"> Ampliar la muestra primero (B)</label>
+        <label><input type="radio" name="pos" value="C"> Decisión temporal y ampliar la muestra</label>
+      </div>
+      <h3 style="margin-top:14px">2 · Criterios técnicos que usaré</h3>
+      <div class="check" id="crit">
+        <label><input type="checkbox"> Media contra mediana y asimetría</label>
+        <label><input type="checkbox"> Dispersión o coeficiente de variación</label>
+        <label><input type="checkbox"> Intervalo de confianza de la media o la proporción</label>
+        <label><input type="checkbox"> Representatividad, campaña y conglomerados</label>
+        <label><input type="checkbox"> Probabilidad previa y actualización con Bayes</label>
+        <label><input type="checkbox"> Supuestos del modelo determinístico</label>
+      </div>
+      <p class="nota" id="critmsg">Elige al menos tres criterios.</p>
+    </div>
+    <div class="card" style="grid-column:span 2">
+      <h3>3 · Escribe tu aporte (150 palabras, 2 o 3 párrafos)</h3>
+      <textarea id="txt" rows="12" placeholder="Párrafo 1: postura y decisión.&#10;Párrafo 2: justificación con al menos dos criterios técnicos y un dato del caso.&#10;Párrafo 3: limitación principal y conclusión breve."></textarea>
+      <p><span class="cnt" id="wc">0</span> palabras · <span id="pc">0</span> párrafos <span id="wmsg" class="nota"></span></p>
+      <button class="btn" onclick="copiar()">Copiar texto</button>
+      <div class="pregunta" style="background:var(--tinte)"><b>Fase 3 · Preguntas de cierre.</b> ¿Qué argumento te pareció más relevante? ¿Qué parte de tu postura cambió o se precisó? ¿Qué aporte de un compañero te ayudó? ¿Cuál es tu postura final y qué criterio la sostiene?</div>
+    </div>
+  </div>
+</section>
+
+<!-- DINAMICA -->
+<section id="dinamica">
+  <div class="eyebrow">Dinámica de clase · 35 minutos</div>
+  <h2>Tribunal de la evidencia</h2>
+  <div class="grid g3">
+    <div class="card">
+      <h3>Fases</h3>
+      <div class="fase on" data-min="5" data-i="0"><b>0 a 5 min · Voto inicial</b><br><span class="lab">Leer el dilema y votar A o B en el chat</span></div>
+      <div class="fase" data-min="10" data-i="1"><b>5 a 15 min · Breakouts</b><br><span class="lab">Cada equipo trabaja con su pestaña</span></div>
+      <div class="fase" data-min="13" data-i="2"><b>15 a 28 min · Plenaria</b><br><span class="lab">2 min por equipo: un dato y un riesgo. Auditoría replica</span></div>
+      <div class="fase" data-min="7" data-i="3"><b>28 a 35 min · Cierre</b><br><span class="lab">Voto final y borrador del aporte en la pestaña 6</span></div>
+    </div>
+    <div class="card oscuro" style="text-align:center">
+      <div class="lab" id="tfase">Voto inicial</div>
+      <div class="timer" style="color:#fff" id="tmr">05:00</div>
+      <div class="votos" style="justify-content:center"><button class="btn" onclick="tStart()">Iniciar</button><button class="btn out" onclick="tPause()">Pausar</button><button class="btn out" onclick="tNext()">Siguiente fase</button></div>
+    </div>
+    <div class="card tinte">
+      <h3>Roles de los equipos</h3>
+      <p><span class="pill">A</span> <b>Decidir ya.</b> Pestañas 2 y 5: defiende la Alternativa A con el modelo de capacidad.</p>
+      <p><span class="pill">B</span> <b>Ampliar muestra.</b> Pestaña 3: IC, campaña y conglomerados.</p>
+      <p><span class="pill">P</span> <b>Bayes.</b> Pestaña 4: actualiza la probabilidad de alta demanda.</p>
+      <p style="margin-bottom:0"><span class="pill ind">?</span> <b>Auditoría.</b> Revisa supuestos de los tres y replica en plenaria, como en la Fase 2 del foro.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>Regla de la plenaria</h3>
+    <p style="margin:0">Cada intervención trae un dato del caso, un criterio técnico del tema y un riesgo de su propia postura. No se vale "estoy de acuerdo" sin análisis: es la netiqueta del foro.</p>
+  </div>
+</section>
+</main>
+<footer><span>Simulador didáctico // Actividad 1 // Bitlab-IT</span><span>Estimación · Muestreo · Bayes · Modelo determinístico</span></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('section').forEach(s=>s.classList.remove('on'));$(b.dataset.t).classList.add('on');window.scrollTo(0,0)});
+const f1=x=>x.toFixed(1),f2=x=>x.toFixed(2),pc=x=>(x*100).toFixed(1)+' %';
+
+// votos
+const V={i:{A:0,B:0},f:{A:0,B:0}};
+function voto(t,o,d){V[t][o]+=d;drawV(t)}function reset(t){V[t]={A:0,B:0};drawV(t)}
+function drawV(t){const v=V[t],tot=v.A+v.B||1;$('v'+t).innerHTML=['A','B'].map(o=>`<div style="display:flex;gap:8px;align-items:center;margin:4px 0"><b style="width:18px">${o}</b><div class="bar" style="width:${Math.max(4,v[o]/tot*100)}%;background:${o=='A'?'var(--verde)':'var(--indigo)'}"></div><span>${v[o]}</span></div>`).join('')}
+drawV('i');drawV('f');
+
+// descriptivos: curva ilustrativa lognormal con mediana 14 y media 18
+(function(){const mu=Math.log(14),s=Math.sqrt(2*Math.log(18/14));const pdf=x=>Math.exp(-((Math.log(x)-mu)**2)/(2*s*s))/(x*s*Math.sqrt(2*Math.PI));
+ const W=520,H=250,L=30,B=210,X=x=>L+x/70*(W-L-10);let mx=0;for(let x=.5;x<70;x+=.5)mx=Math.max(mx,pdf(x));const Y=y=>B-y/mx*170;
+ let d=`M${X(.5)},${B}`;for(let x=.5;x<=70;x+=.5)d+=` L${X(x)},${Y(pdf(x))}`;let a=`M${X(30)},${B}`;for(let x=30;x<=70;x+=.5)a+=` L${X(x)},${Y(pdf(x))}`;a+=` L${X(70)},${B}Z`;
+ const mk=(x,c,t,dy)=>`<line x1="${X(x)}" x2="${X(x)}" y1="${B}" y2="30" stroke="${c}" stroke-width="2" stroke-dasharray="5 4"/><text x="${X(x)+4}" y="${dy}" fill="${c}" font-size="12" font-weight="700">${t}</text>`;
+ let ax='';for(let x=0;x<=70;x+=10)ax+=`<text x="${X(x)}" y="${B+18}" font-size="11" fill="#5B5B66" text-anchor="middle">${x}</text>`;
+ $('skew').innerHTML=`<path d="${a}" fill="#D64545" opacity=".18"/><path d="${d}" fill="none" stroke="#007989" stroke-width="3"/><line x1="${L}" x2="${W-10}" y1="${B}" y2="${B}" stroke="#ccc"/>${ax}${mk(14,'#1D1D1F','Mediana 14',44)}${mk(18,'#007989','Media 18',62)}${mk(30,'#D64545','30 min',80)}<text x="${X(40)}" y="${B-30}" fill="#D64545" font-size="12">cola de casos largos</text><text x="${W/2}" y="${B+36}" font-size="11" fill="#5B5B66" text-anchor="middle">minutos de atención</text>`;})();
+
+// estimacion
+function est(){const m=+$('e_m').value,s=+$('e_s').value,n=+$('e_n').value,p=+$('e_p').value,z=+$('e_c').value;
+ $('e_mv').textContent=m;$('e_sv').textContent=s;$('e_nv').textContent=n;$('e_pv').textContent=Math.round(p*100)+' %';
+ const me=z*s/Math.sqrt(n);$('e_ic').textContent=f1(m-me)+' a '+f1(m+me);const mp=z*Math.sqrt(p*(1-p)/n);$('e_icp').textContent=pc(Math.max(0,p-mp))+' a '+pc(p+mp);
+ const k=+$('c_k').value,icc=+$('c_i').value;$('c_kv').textContent=k;$('c_iv').textContent=icc.toFixed(2);const mm=n/k,deff=1+(mm-1)*icc,ne=n/deff;$('c_neff').textContent=Math.round(ne);const me2=z*s/Math.sqrt(ne);$('c_ic').textContent=f1(m-me2)+' a '+f1(m+me2)+' min';
+ const E=+$('s_e').value;$('s_ev').textContent=E.toFixed(1);const n0=Math.ceil((z*s/E)**2);$('s_n').textContent=n0;$('s_m').textContent=Math.round(mm);$('s_k').textContent='≈ '+Math.ceil(n0*deff/mm);
+ const c=+$('p_c').value;$('p_cv').textContent=c;$('p_m').textContent=f1((4*m-c)/3);}
+['e_m','e_s','e_n','e_p','e_c','c_k','c_i','s_e','p_c'].forEach(i=>$(i).oninput=est);est();
+
+// bayes
+let POST=0.63;
+function bay(){const a=+$('b_a').value,h=+$('b_h').value,l=+$('b_l').value;$('b_av').textContent=a.toFixed(2);$('b_hv').textContent=h.toFixed(2);$('b_lv').textContent=l.toFixed(2);
+ const tot=h*a+l*(1-a),post=h*a/tot;POST=post;$('b_post').textContent=f2(post);$('b_tot').textContent=f2(tot);
+ $('b_cons').innerHTML=Math.abs(tot-.2)<=.03?'<span class="ok">Tus supuestos reproducen bien el 20 % observado.</span>':'<span class="warn">Tus supuestos implican '+pc(tot)+' de solicitudes > 30 min, distinto del 20 % observado. Revísalos o explica la diferencia.</span>';
+ $('b_txt').textContent=`P(alta | > 30) = ${h.toFixed(2)} × ${a.toFixed(2)} / (${h.toFixed(2)} × ${a.toFixed(2)} + ${l.toFixed(2)} × ${(1-a).toFixed(2)}) = ${f2(post)}. Ojo: es la probabilidad para una solicitud que tardó más de 30 min, no la probabilidad de que todo el fin de semana sea de alta demanda.`;
+ const bars=[['Previa',a,'#1D1D1F'],['Posterior',post,'#007989']];let g='';bars.forEach((b,i)=>{const x=50+i*120,hh=b[1]*160;g+=`<rect x="${x}" y="${190-hh}" width="80" height="${hh}" rx="6" fill="${b[2]}"/><text x="${x+40}" y="${182-hh}" text-anchor="middle" font-size="14" font-weight="700" fill="${b[2]}">${f2(b[1])}</text><text x="${x+40}" y="210" text-anchor="middle" font-size="12" fill="#5B5B66">${b[0]}</text>`});
+ $('bsvg').innerHTML=`<line x1="30" x2="290" y1="190" y2="190" stroke="#ccc"/>${g}`;mod();}
+['b_a','b_h','b_l'].forEach(i=>$(i).oninput=bay);
+
+// modelo
+function mod(){const v=+$('m_v').value,inc=+$('m_i').value,t=+$('m_t').value,h=+$('m_h').value,o=+$('m_o').value,a=+$('m_a').value;
+ $('m_vv').textContent=v;$('m_iv').textContent=Math.round(inc*100)+' %';$('m_hv').textContent=h;$('m_ov').textContent=Math.round(o*100)+' %';$('m_av').textContent=a;
+ const p=$('m_p').value==='post'?POST:+$('b_a').value;const vh=v*(1+inc),vp=v*(1-p)+vh*p;
+ const ag=vol=>Math.ceil(vol*t/(60*h*o));const S=[['Normal',v],['Alta demanda',vh],['Ponderado (p = '+f2(p)+')',vp]];
+ $('mtab').innerHTML=S.map(s=>{const n=ag(s[1]),b=a-n;return `<tr><td>${s[0]}</td><td>${Math.round(s[1])}</td><td>${f1(s[1]*t/60)}</td><td><b>${n}</b></td><td class="${b<0?'warn':'ok'}">${b>=0?'+':''}${b}</td></tr>`}).join('');
+ const mx=Math.max(a,...S.map(s=>ag(s[1])))*1.15,Y=x=>240-x/mx*200;let g='';S.forEach((s,i)=>{const n=ag(s[1]),x=190+i*150;g+=`<rect x="${x}" y="${Y(n)}" width="100" height="${240-Y(n)}" rx="8" fill="${i==1?'#1D1D1F':'#007989'}"/><text x="${x+50}" y="${Y(n)-8}" text-anchor="middle" font-size="16" font-weight="700" fill="#222">${n}</text><text x="${x+50}" y="262" text-anchor="middle" font-size="12" fill="#5B5B66">${s[0]}</text>`});
+ g+=`<line x1="40" x2="630" y1="${Y(a)}" y2="${Y(a)}" stroke="#D64545" stroke-width="2" stroke-dasharray="6 4"/><rect x="40" y="${Y(a)-22}" width="132" height="18" rx="4" fill="#fff"/><text x="44" y="${Y(a)-8}" font-size="12" fill="#D64545" font-weight="700">Agentes actuales: ${a}</text>`;
+ $('msvg').innerHTML=`<line x1="40" x2="630" y1="240" y2="240" stroke="#ccc"/>${g}`;}
+['m_v','m_i','m_t','m_h','m_o','m_a','m_p'].forEach(i=>$(i).oninput=mod);
+bay();
+
+// postura
+function wc(){const t=$('txt').value.trim();const w=t?t.split(/\s+/).length:0;const p=t?t.split(/\n\s*\n|\n/).filter(x=>x.trim()).length:0;$('wc').textContent=w;$('pc').textContent=p;
+ $('wmsg').innerHTML=w===0?'':(w<130?' · <span class="warn">te faltan palabras para llegar a 150</span>':w>175?' · <span class="warn">recorta, la extensión pedida es 150</span>':' · <span class="ok">extensión adecuada</span>');}
+$('txt').oninput=wc;
+$('crit').onchange=()=>{const n=[...document.querySelectorAll('#crit input')].filter(x=>x.checked).length;$('critmsg').innerHTML=n>=3?'<span class="ok">'+n+' criterios seleccionados. Usa cada uno con un dato del caso.</span>':'Elige al menos tres criterios.'};
+function copiar(){navigator.clipboard&&navigator.clipboard.writeText($('txt').value)}
+
+// cronometro
+const fases=[...document.querySelectorAll('.fase')];let fi=0,rem=300,tid=null;
+function show(){$('tmr').textContent=String(Math.floor(rem/60)).padStart(2,'0')+':'+String(rem%60).padStart(2,'0');$('tfase').textContent=fases[fi].querySelector('b').textContent;fases.forEach((f,i)=>f.classList.toggle('on',i===fi))}
+function setF(i){fi=i;rem=+fases[i].dataset.min*60;tPause();show()}
+function tStart(){if(tid)return;tid=setInterval(()=>{if(rem>0){rem--;show()}else{tPause()}},1000)}
+function tPause(){clearInterval(tid);tid=null}
+function tNext(){setF((fi+1)%fases.length)}
+fases.forEach((f,i)=>f.onclick=()=>setF(i));show();
+</script>
+</body>
+</html>
